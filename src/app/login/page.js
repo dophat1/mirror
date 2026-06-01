@@ -2,14 +2,23 @@
 
 import {useState} from 'react'
 import supabase from '../../lib/supabaseClient'
+import { useRouter } from 'next/navigation'
+
+
 
 export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const router = useRouter()
+
 
     async function handleSubmit() {
         const result = await supabase.auth.signInWithPassword({ email, password })
-        console.log(result)
+        if (result.error) {
+            console.log(result)
+        } else {
+            router.push('/dashboard') // redirects to /dashboard
+        }
     }
     return (
         <div>
